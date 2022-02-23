@@ -14,7 +14,7 @@ def pytest_addoption(parser):
                      help="Choose user language")
 
 
-@pytest.mark.parametrize('language')
+
 @pytest.fixture(scope="function")
 def browser(request):
     browser_name = request.config.getoption("browser_name")
