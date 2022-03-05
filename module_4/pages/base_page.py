@@ -1,4 +1,6 @@
-from selenium.common.exceptions import NoSuchElementException
+import math
+
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 from .locators import MainPageLocators
 
 
@@ -11,8 +13,7 @@ class BasePage(object):
 
     def open(self):
         self.browser.get(self.url)
-        login_link = self.browser.find_element(*MainPageLocators.LOGIN_LINK)
-        login_link.click()
+
 
     def is_element_present(self, how, what):
         try:
@@ -20,3 +21,17 @@ class BasePage(object):
         except NoSuchElementException:
             return False
         return True
+
+    def solve_quiz_and_get_code(self):
+        alert = self.browser.switch_to.alert
+        x = alert.text.split(" ")[2]
+        answer = str(math.log(abs((12 * math.sin(float(x))))))
+        alert.send_keys(answer)
+        alert.accept()
+        try:
+            alert = self.browser.switch_to.alert
+            alert_text = alert.text
+            print(f"Your code: {alert_text}")
+            alert.accept()
+        except NoAlertPresentException:
+            print("No second alert presented")
