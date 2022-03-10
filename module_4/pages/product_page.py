@@ -8,12 +8,16 @@ class ProductPage(BasePage):
         add_to_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         add_to_basket.click()
 
-    def item_in_basket(self):
-        assert self.browser.find_element(*ProductPageLocators.ITEM_IN_BASKET)
+    def success_message(self):
+        assert self.browser.find_element(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is not presented"
 
-    def go_to_basket_page(self):
-        basket = self.browser.find_element(*ProductPageLocators.BASKET_PAGE)
-        basket.click()
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_not_be_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is disappeared, but should not be"
 
     def right_item_in_basket(self):
         product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME)
